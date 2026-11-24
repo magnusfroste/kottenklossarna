@@ -344,8 +344,15 @@
     document.getElementById("overlay").hidden = true;
     ritaStjärnor(); kottenByt("glad");
     spar("round_start"); spar("level", niva);
-    if (niva === 2) setTimeout(function () { sag("Nu frågar jag vad klossarna kan. Lyssna noga."); }, 900);
-    else if (niva === 3) setTimeout(function () { sag("Nu är klossarna svåra att skilja. Lyssna noga."); }, 900);
+    var intro = niva === 2 ? "Nu frågar jag vad klossarna kan. Lyssna noga."
+      : niva === 3 ? "Nu är klossarna svåra att skilja. Lyssna noga." : "";
+    if (intro) {
+      /* Säg intro, men låt frågan stå kvar i bubblan efteråt. */
+      setTimeout(function () {
+        sag(intro);
+        setTimeout(function () { if (!S.klar) sag(S.p.fraga); }, 2600);
+      }, 700);
+    }
     nyUppgift();
   }
 
