@@ -116,6 +116,13 @@
     } catch (e) { }
   }
   function sag(text) {
+    /* Frågan och återkopplingen står också som text, så appen går att spela
+       med ljudet avstängt. Talet läses upp samtidigt när ljudet är på. */
+    var b = document.getElementById("bubbla");
+    if (b) {
+      if (text) { b.textContent = text; b.hidden = false; }
+      else { b.hidden = true; }
+    }
     if (!ljudPa) return;
     try {
       if (!("speechSynthesis" in window) || !text) return;
@@ -190,12 +197,12 @@
     var r = el.getBoundingClientRect();
     if (r.width && r.height && r.width < r.height * 0.95) {
       return {
-        vb: [620, 1190], kort: { w: 560, h: 366, x: 30, ys: [10, 402, 794] },
+        vb: [620, 1190], kort: { w: 560, h: 366, x: 30, ys: [10, 402, 794], xs: [310, 310, 310] },
         formY: 168, formS: 236, namnY: 320, namnStorlek: 40, skuggaY: 292
       };
     }
     return {
-      vb: [900, 412], kort: { w: 250, h: 392, x: 35, ys: [8, 8, 8] },
+      vb: [900, 412], kort: { w: 250, h: 392, x: 35, ys: [8, 8, 8], xs: [160, 450, 740] },
       formY: 176, formS: 232, namnY: 362, namnStorlek: 34, skuggaY: 322
     };
   }
@@ -204,11 +211,7 @@
     var p = S.p, el = document.getElementById("scen");
     if (!p) return;
     var L = layoutFor(el), h = [];
-    var xs = L.kort.xs || [L.kort.x + L.kort.w / 2, L.kort.x + L.kort.w / 2, L.kort.x + L.kort.w / 2];
-    if (!L.kort.xs) {
-      var steg = (L.vb[0] - L.kort.x * 2 - L.kort.w) / 2;
-      xs = [L.kort.x + L.kort.w / 2, L.kort.x + L.kort.w * 1.5 + steg, L.kort.x + L.kort.w * 2.5 + steg * 2];
-    }
+    var xs = L.kort.xs;
     el.setAttribute("viewBox", "0 0 " + L.vb[0] + " " + L.vb[1]);
     h.push('<rect x="0" y="0" width="' + L.vb[0] + '" height="' + L.vb[1] + '" fill="var(--papper)"/>');
     p.alternativ.forEach(function (sort, i) {
